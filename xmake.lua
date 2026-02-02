@@ -1,7 +1,7 @@
 set_targetdir("./build")
 set_languages("c++23")
 
-includes("testkit")
+includes("lib/testkit")
 
 target("sperf")
     set_kind("binary")
