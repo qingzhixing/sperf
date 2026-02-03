@@ -28,8 +28,8 @@ public:
 public:
 	static void PrintVersion()
 	{
-		std::cout << std::format("🎃 {}: {}\n", project_name, description);
 		std::cout << ascii_art << std::endl;
+		std::cout << std::format("🎃 {}: {}\n", project_name, description);
 		std::cout << std::format("⌨️ Author: {}\n", author);
 		std::cout << std::format("💌 Mail: {}\n", mail);
 		std::cout << std::format("👾 License: {}\n", license);
