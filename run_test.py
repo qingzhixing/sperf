@@ -31,7 +31,7 @@ def main():
     subprocess.run(["valgrind", "--tool=memcheck",
                     "--show-leak-kinds=all", "--leak-check=full",
                     "-q",
-                    "./sperf"], cwd="./build", check=False)
+                    "./sperf","ls","./"], cwd="./build", check=False)
     
     print("✅ valgrind运行结束")
 
