@@ -34,6 +34,14 @@ UnitTest(Test_VersionArgument_Short)
 	assert(sperf_args.print_version);
 }
 
+UnitTest(Test_NoArgument)
+{
+	char *argv[] = {strdup("sperf")};
+	int argc = sizeof(argv) / sizeof(argv[0]);
+	auto sperf_args = ArgumentHandler::HandleArguments(argc, argv);
+	assert(sperf_args.print_help);
+}
+
 UnitTest(Test_InvalidArgument)
 {
 	char *argv[] = {strdup("sperf"), strdup("--invalid")};

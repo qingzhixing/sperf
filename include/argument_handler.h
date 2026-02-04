@@ -36,6 +36,11 @@ public:
 	{
 		SperfArguments sperf_args;
 
+		if (argc == 1)
+		{
+			return {.print_help = true};
+		}
+
 		int opt;
 
 		// long options
@@ -44,7 +49,7 @@ public:
 			{"help", no_argument, nullptr, 'h'},
 			{nullptr, 0, nullptr, 0}};
 
-		const char *optstring = "+hv";
+		const char *optstring = "hv";
 
 		while ((opt = getopt_long(argc, argv, optstring, long_options, nullptr)) != -1)
 		{
