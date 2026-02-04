@@ -4,12 +4,12 @@
 
 #include <string>
 #include <vector>
-#include <getopt.h>
 
 struct SperfArguments
 {
 	bool print_help = false;
 	bool print_version = false;
+	std::string error_message;
 	std::string executable_name;
 	std::vector<std::string> executable_arguments;
 };
@@ -38,48 +38,58 @@ public:
 
 		if (argc == 1)
 		{
-			return {.print_help = true};
+			return {.error_message = "No arguments provided."};
 		}
 
-		int opt;
-
-		// long options
-		static struct option long_options[] = {
-			{"version", no_argument, nullptr, 'v'},
-			{"help", no_argument, nullptr, 'h'},
-			{nullptr, 0, nullptr, 0}};
-
-		const char *optstring = "hv";
-
-		while ((opt = getopt_long(argc, argv, optstring, long_options, nullptr)) != -1)
+		// 先处理所有以 '-' 开头的选项（sperf 自己的选项）
+		int arg_idx = 1;
+		while (arg_idx < argc && argv[arg_idx][0] == '-')
 		{
-			switch (opt)
+			std::string arg = argv[arg_idx];
+
+			if (arg == "-h" || arg == "--help")
 			{
-			case 'v':
-				sperf_args.print_version = true;
-				break;
-
-			case 'h':
 				sperf_args.print_help = true;
-				break;
-
-			default:
-				// Invalid options
-				return {.print_help = true};
 			}
+			else if (arg == "-v" || arg == "--version")
+			{
+				sperf_args.print_version = true;
+			}
+			else
+			{
+				// 未知选项
+				return {.error_message = "Unknown option: " + arg};
+			}
+
+			arg_idx++;
 		}
 
-		// Parse COMMAND & ARGS
-		if (optind >= argc)
+		// 剩下的部分是命令和参数
+		if (arg_idx >= argc)
 		{
-			return {.print_help = true};
+			// 只有选项，没有命令
+			if (!sperf_args.print_help && !sperf_args.print_version)
+			{
+				return {.error_message = "No command provided."};
+			}
+			return sperf_args;
 		}
 
-		sperf_args.executable_name = argv[optind];
+		// 第一个非选项参数是命令名
+		sperf_args.executable_name = argv[arg_idx];
+		arg_idx++;
 
-		for (int i = optind + 1; i < argc; i++)
+		// 剩下的都是命令参数
+		for (; arg_idx < argc; arg_idx++)
 		{
-			sperf_args.executable_arguments.push_back(argv[i]);
+			sperf_args.executable_arguments.push_back(argv[arg_idx]);
+		}
+
+		// 帮助/版本信息优先
+		if (sperf_args.print_help || sperf_args.print_version)
+		{
+			sperf_args.executable_name.clear();
+			sperf_args.executable_arguments.clear();
 		}
 
 		return sperf_args;

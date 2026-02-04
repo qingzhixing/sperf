@@ -7,6 +7,15 @@
 int main(int argc, char *argv[])
 {
 	auto sperf_arguments = ArgumentHandler::HandleArguments(argc, argv);
+
+	// Check error message
+	if (!sperf_arguments.error_message.empty())
+	{
+		std::cerr << "Error: " << sperf_arguments.error_message << "\n";
+		ProjectInfo::PrintHelp();
+		return 1;
+	}
+
 	// Print help message
 	if (sperf_arguments.print_help)
 	{

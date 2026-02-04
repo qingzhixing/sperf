@@ -39,7 +39,9 @@ UnitTest(Test_NoArgument)
 	char *argv[] = {strdup("sperf")};
 	int argc = sizeof(argv) / sizeof(argv[0]);
 	auto sperf_args = ArgumentHandler::HandleArguments(argc, argv);
-	assert(sperf_args.print_help);
+	assert(!sperf_args.print_help);
+	assert(!sperf_args.print_version);
+	assert(!sperf_args.error_message.empty());
 }
 
 UnitTest(Test_InvalidArgument)
@@ -47,7 +49,9 @@ UnitTest(Test_InvalidArgument)
 	char *argv[] = {strdup("sperf"), strdup("--invalid")};
 	int argc = sizeof(argv) / sizeof(argv[0]);
 	auto sperf_args = ArgumentHandler::HandleArguments(argc, argv);
-	assert(sperf_args.print_help);
+	assert(!sperf_args.print_help);
+	assert(!sperf_args.print_version);
+	assert(!sperf_args.error_message.empty());
 }
 
 UnitTest(Test_ValidArgument)
@@ -60,7 +64,10 @@ UnitTest(Test_ValidArgument)
 	};
 	int argc = sizeof(argv) / sizeof(argv[0]);
 	auto sperf_args = ArgumentHandler::HandleArguments(argc, argv);
+	// Check other arguments
 	assert(!sperf_args.print_help);
+	assert(!sperf_args.print_version);
+	assert(sperf_args.error_message.empty());
 	// Check executable name
 	assert(sperf_args.executable_name == "ls");
 	// Check executable arguments
