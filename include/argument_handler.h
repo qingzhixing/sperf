@@ -44,7 +44,7 @@ public:
 			{"help", no_argument, nullptr, 'h'},
 			{nullptr, 0, nullptr, 0}};
 
-		const char *optstring = "hv";
+		const char *optstring = "+hv";
 
 		while ((opt = getopt_long(argc, argv, optstring, long_options, nullptr)) != -1)
 		{
