@@ -1,8 +1,36 @@
 #include <project_info.h>
 #include <unistd.h>
+#include <argument_handler.h>
+#include <iostream>
+#include <format>
 
 int main(int argc, char *argv[])
 {
+	auto sperf_arguments = ArgumentHandler::HandleArguments(argc, argv);
+	// Print help message
+	if (sperf_arguments.print_help)
+	{
+		ProjectInfo::PrintHelp();
+		return 0;
+	}
+
+	// Print version information
+	if (sperf_arguments.print_version)
+	{
+		ProjectInfo::PrintVersion();
+		return 0;
+	}
+
+	std::cout << std::format("Executable name: {}\n", sperf_arguments.executable_name);
+	std::cout << "Executable arguments: ";
+	for (const auto &arg : sperf_arguments.executable_arguments)
+	{
+		std::cout << arg << " ";
+	}
+	std::cout << "\n";
+
+	return 0;
+
 	char *exec_argv[] = {
 		"strace",
 		"ls",
