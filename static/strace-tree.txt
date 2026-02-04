@@ -1,0 +1,156 @@
+execve("/usr/bin/tree", ["tree", "./"], 0x7ffc8181b280 /* 23 vars */) = 0 <0.000263>
+brk(NULL)                               = 0x5a261022e000 <0.000043>
+mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7486156f4000 <0.000047>
+access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (No such file or directory) <0.000048>
+openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3 <0.000049>
+fstat(3, {st_mode=S_IFREG|0644, st_size=29339, ...}) = 0 <0.000037>
+mmap(NULL, 29339, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7486156ec000 <0.000050>
+close(3)                                = 0 <0.000047>
+openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC) = 3 <0.000048>
+read(3, "\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\220\243\2\0\0\0\0\0"..., 832) = 832 <0.000047>
+pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784 <0.000042>
+fstat(3, {st_mode=S_IFREG|0755, st_size=2125328, ...}) = 0 <0.000037>
+pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784 <0.000044>
+mmap(NULL, 2170256, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x748615400000 <0.000052>
+mmap(0x748615428000, 1605632, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x28000) = 0x748615428000 <0.000049>
+mmap(0x7486155b0000, 323584, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1b0000) = 0x7486155b0000 <0.000049>
+mmap(0x7486155ff000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1fe000) = 0x7486155ff000 <0.000059>
+mmap(0x748615605000, 52624, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x748615605000 <0.000051>
+close(3)                                = 0 <0.000068>
+mmap(NULL, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7486156e9000 <0.000055>
+arch_prctl(ARCH_SET_FS, 0x7486156e9740) = 0 <0.000038>
+set_tid_address(0x7486156e9a10)         = 380824 <0.000053>
+set_robust_list(0x7486156e9a20, 24)     = 0 <0.000088>
+rseq(0x7486156ea060, 0x20, 0, 0x53053053) = 0 <0.000093>
+mprotect(0x7486155ff000, 16384, PROT_READ) = 0 <0.000060>
+mprotect(0x5a2602009000, 4096, PROT_READ) = 0 <0.000056>
+mprotect(0x74861572c000, 8192, PROT_READ) = 0 <0.000069>
+prlimit64(0, RLIMIT_STACK, NULL, {rlim_cur=8192*1024, rlim_max=RLIM64_INFINITY}) = 0 <0.000055>
+munmap(0x7486156ec000, 29339)           = 0 <0.000053>
+getrandom("\x8f\x5d\xf4\xd3\xa6\x2a\x89\x52", 8, GRND_NONBLOCK) = 8 <0.000042>
+brk(NULL)                               = 0x5a261022e000 <0.000043>
+brk(0x5a261024f000)                     = 0x5a261024f000 <0.000056>
+openat(AT_FDCWD, "/usr/lib/locale/locale-archive", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory) <0.000170>
+openat(AT_FDCWD, "/usr/share/locale/locale.alias", O_RDONLY|O_CLOEXEC) = 3 <0.000066>
+fstat(3, {st_mode=S_IFREG|0644, st_size=2996, ...}) = 0 <0.000054>
+read(3, "# Locale name alias data base.\n#"..., 4096) = 2996 <0.000047>
+read(3, "", 4096)                       = 0 <0.000046>
+close(3)                                = 0 <0.000042>
+openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_CTYPE", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory) <0.000051>
+openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_CTYPE", O_RDONLY|O_CLOEXEC) = 3 <0.000055>
+fstat(3, {st_mode=S_IFREG|0644, st_size=360460, ...}) = 0 <0.000048>
+mmap(NULL, 360460, PROT_READ, MAP_PRIVATE, 3, 0) = 0x748615690000 <0.000051>
+close(3)                                = 0 <0.000044>
+openat(AT_FDCWD, "/usr/lib/x86_64-linux-gnu/gconv/gconv-modules.cache", O_RDONLY|O_CLOEXEC) = 3 <0.000047>
+fstat(3, {st_mode=S_IFREG|0644, st_size=27028, ...}) = 0 <0.000037>
+mmap(NULL, 27028, PROT_READ, MAP_SHARED, 3, 0) = 0x7486156ed000 <0.000051>
+close(3)                                = 0 <0.000041>
+futex(0x74861560472c, FUTEX_WAKE_PRIVATE, 2147483647) = 0 <0.000042>
+openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_COLLATE", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory) <0.000045>
+openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_COLLATE", O_RDONLY|O_CLOEXEC) = 3 <0.000044>
+fstat(3, {st_mode=S_IFREG|0644, st_size=1406, ...}) = 0 <0.000041>
+mmap(NULL, 1406, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7486156ec000 <0.000167>
+close(3)                                = 0 <0.000062>
+newfstatat(AT_FDCWD, "./", {st_mode=S_IFDIR|0777, st_size=4096, ...}, AT_SYMLINK_NOFOLLOW) = 0 <0.000259>
+openat(AT_FDCWD, "./", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY) = 3 <0.000315>
+fstat(3, {st_mode=S_IFDIR|0777, st_size=4096, ...}) = 0 <0.000242>
+getdents64(3, 0x5a2610235360 /* 16 entries */, 32768) = 472 <0.000393>
+newfstatat(AT_FDCWD, "./build", {st_mode=S_IFDIR|0777, st_size=4096, ...}, AT_SYMLINK_NOFOLLOW) = 0 <0.000629>
+newfstatat(AT_FDCWD, "./include", {st_mode=S_IFDIR|0777, st_size=4096, ...}, AT_SYMLINK_NOFOLLOW) = 0 <0.000583>
+newfstatat(AT_FDCWD, "./lib", {st_mode=S_IFDIR|0777, st_size=4096, ...}, AT_SYMLINK_NOFOLLOW) = 0 <0.000635>
+newfstatat(AT_FDCWD, "./LICENSE", {st_mode=S_IFREG|0777, st_size=1068, ...}, AT_SYMLINK_NOFOLLOW) = 0 <0.000761>
+newfstatat(AT_FDCWD, "./readme.md", {st_mode=S_IFREG|0777, st_size=261, ...}, AT_SYMLINK_NOFOLLOW) = 0 <0.000651>
+newfstatat(AT_FDCWD, "./run_test.py", {st_mode=S_IFREG|0777, st_size=1010, ...}, AT_SYMLINK_NOFOLLOW) = 0 <0.000655>
+newfstatat(AT_FDCWD, "./src", {st_mode=S_IFDIR|0777, st_size=4096, ...}, AT_SYMLINK_NOFOLLOW) = 0 <0.000675>
+newfstatat(AT_FDCWD, "./static", {st_mode=S_IFDIR|0777, st_size=4096, ...}, AT_SYMLINK_NOFOLLOW) = 0 <0.000696>
+newfstatat(AT_FDCWD, "./strace-tree.txt", {st_mode=S_IFREG|0777, st_size=5516, ...}, AT_SYMLINK_NOFOLLOW) = 0 <0.000206>
+newfstatat(AT_FDCWD, "./test", {st_mode=S_IFDIR|0777, st_size=4096, ...}, AT_SYMLINK_NOFOLLOW) = 0 <0.000581>
+newfstatat(AT_FDCWD, "./xmake.lua", {st_mode=S_IFREG|0777, st_size=240, ...}, AT_SYMLINK_NOFOLLOW) = 0 <0.000602>
+getdents64(3, 0x5a2610235360 /* 0 entries */, 32768) = 0 <0.000235>
+close(3)                                = 0 <0.000216>
+fstat(1, {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0), ...}) = 0 <0.000041>
+write(1, "./\n", 3)                     = 3 <0.000065>
+write(1, "\342\224\234\342\224\200\342\224\200 LICENSE\n", 18) = 18 <0.000308>
+openat(AT_FDCWD, "./build", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY) = 3 <0.000891>
+fstat(3, {st_mode=S_IFDIR|0777, st_size=4096, ...}) = 0 <0.000221>
+getdents64(3, 0x5a261023e900 /* 7 entries */, 32768) = 208 <0.000649>
+newfstatat(AT_FDCWD, "./build/libtestkit.a", {st_mode=S_IFREG|0777, st_size=12496, ...}, AT_SYMLINK_NOFOLLOW) = 0 <0.001212>
+newfstatat(AT_FDCWD, "./build/sperf", {st_mode=S_IFREG|0777, st_size=211936, ...}, AT_SYMLINK_NOFOLLOW) = 0 <0.000711>
+getdents64(3, 0x5a261023e900 /* 0 entries */, 32768) = 0 <0.000268>
+close(3)                                = 0 <0.000339>
+write(1, "\342\224\234\342\224\200\342\224\200 build\n", 16) = 16 <0.000068>
+write(1, "\342\224\202\302\240\302\240 \342\224\234\342\224\200\342\224\200 libtestkit.a\n", 31) = 31 <0.000060>
+write(1, "\342\224\202\302\240\302\240 \342\224\224\342\224\200\342\224\200 sperf\n", 24) = 24 <0.000060>
+openat(AT_FDCWD, "./include", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY) = 3 <0.000626>
+fstat(3, {st_mode=S_IFDIR|0777, st_size=4096, ...}) = 0 <0.000214>
+getdents64(3, 0x5a261023e900 /* 3 entries */, 32768) = 88 <0.000404>
+newfstatat(AT_FDCWD, "./include/project_info.h", {st_mode=S_IFREG|0777, st_size=2376, ...}, AT_SYMLINK_NOFOLLOW) = 0 <0.000632>
+getdents64(3, 0x5a261023e900 /* 0 entries */, 32768) = 0 <0.000241>
+close(3)                                = 0 <0.000296>
+write(1, "\342\224\234\342\224\200\342\224\200 include\n", 18) = 18 <0.000058>
+write(1, "\342\224\202\302\240\302\240 \342\224\224\342\224\200\342\224\200 project_info.h"..., 33) = 33 <0.000062>
+openat(AT_FDCWD, "./lib", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY) = 3 <0.000606>
+fstat(3, {st_mode=S_IFDIR|0777, st_size=4096, ...}) = 0 <0.000211>
+getdents64(3, 0x5a261023e900 /* 3 entries */, 32768) = 80 <0.000347>
+newfstatat(AT_FDCWD, "./lib/testkit", {st_mode=S_IFDIR|0777, st_size=4096, ...}, AT_SYMLINK_NOFOLLOW) = 0 <0.000643>
+getdents64(3, 0x5a261023e900 /* 0 entries */, 32768) = 0 <0.000257>
+close(3)                                = 0 <0.000263>
+write(1, "\342\224\234\342\224\200\342\224\200 lib\n", 14) = 14 <0.000066>
+openat(AT_FDCWD, "./lib/testkit", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY) = 3 <0.001560>
+fstat(3, {st_mode=S_IFDIR|0777, st_size=4096, ...}) = 0 <0.000275>
+getdents64(3, 0x5a261023e900 /* 5 entries */, 32768) = 136 <0.000420>
+newfstatat(AT_FDCWD, "./lib/testkit/include", {st_mode=S_IFDIR|0777, st_size=4096, ...}, AT_SYMLINK_NOFOLLOW) = 0 <0.000658>
+newfstatat(AT_FDCWD, "./lib/testkit/src", {st_mode=S_IFDIR|0777, st_size=4096, ...}, AT_SYMLINK_NOFOLLOW) = 0 <0.000588>
+newfstatat(AT_FDCWD, "./lib/testkit/xmake.lua", {st_mode=S_IFREG|0777, st_size=146, ...}, AT_SYMLINK_NOFOLLOW) = 0 <0.000609>
+getdents64(3, 0x5a261023e900 /* 0 entries */, 32768) = 0 <0.000260>
+close(3)                                = 0 <0.000373>
+write(1, "\342\224\202\302\240\302\240 \342\224\224\342\224\200\342\224\200 testkit\n", 26) = 26 <0.000070>
+openat(AT_FDCWD, "./lib/testkit/include", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY) = 3 <0.001239>
+fstat(3, {st_mode=S_IFDIR|0777, st_size=4096, ...}) = 0 <0.000197>
+getdents64(3, 0x5a261023e900 /* 3 entries */, 32768) = 80 <0.000339>
+newfstatat(AT_FDCWD, "./lib/testkit/include/testkit.h", {st_mode=S_IFREG|0777, st_size=10429, ...}, AT_SYMLINK_NOFOLLOW) = 0 <0.000605>
+getdents64(3, 0x5a261023e900 /* 0 entries */, 32768) = 0 <0.000633>
+close(3)                                = 0 <0.000470>
+write(1, "\342\224\202\302\240\302\240     \342\224\234\342\224\200\342\224\200 include\n", 30) = 30 <0.000063>
+write(1, "\342\224\202\302\240\302\240     \342\224\202\302\240\302\240 \342\224\224\342\224\200\342\224\200 te"..., 40) = 40 <0.000052>
+openat(AT_FDCWD, "./lib/testkit/src", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY) = 3 <0.001311>
+fstat(3, {st_mode=S_IFDIR|0777, st_size=4096, ...}) = 0 <0.000570>
+getdents64(3, 0x5a261023e900 /* 3 entries */, 32768) = 80 <0.000631>
+newfstatat(AT_FDCWD, "./lib/testkit/src/testkit.cpp", {st_mode=S_IFREG|0777, st_size=10329, ...}, AT_SYMLINK_NOFOLLOW) = 0 <0.000812>
+getdents64(3, 0x5a261023e900 /* 0 entries */, 32768) = 0 <0.000276>
+close(3)                                = 0 <0.000670>
+write(1, "\342\224\202\302\240\302\240     \342\224\234\342\224\200\342\224\200 src\n", 26) = 26 <0.000068>
+write(1, "\342\224\202\302\240\302\240     \342\224\202\302\240\302\240 \342\224\224\342\224\200\342\224\200 te"..., 42) = 42 <0.000061>
+write(1, "\342\224\202\302\240\302\240     \342\224\224\342\224\200\342\224\200 xmake.lua\n", 32) = 32 <0.000064>
+write(1, "\342\224\234\342\224\200\342\224\200 readme.md\n", 20) = 20 <0.000160>
+write(1, "\342\224\234\342\224\200\342\224\200 run_test.py\n", 22) = 22 <0.000065>
+openat(AT_FDCWD, "./src", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY) = 3 <0.000722>
+fstat(3, {st_mode=S_IFDIR|0777, st_size=4096, ...}) = 0 <0.000243>
+getdents64(3, 0x5a261023e900 /* 3 entries */, 32768) = 80 <0.000422>
+newfstatat(AT_FDCWD, "./src/main.cpp", {st_mode=S_IFREG|0777, st_size=109, ...}, AT_SYMLINK_NOFOLLOW) = 0 <0.000761>
+getdents64(3, 0x5a261023e900 /* 0 entries */, 32768) = 0 <0.000281>
+close(3)                                = 0 <0.000516>
+write(1, "\342\224\234\342\224\200\342\224\200 src\n", 14) = 14 <0.000375>
+write(1, "\342\224\202\302\240\302\240 \342\224\224\342\224\200\342\224\200 main.cpp\n", 27) = 27 <0.000092>
+openat(AT_FDCWD, "./static", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY) = 3 <0.001411>
+fstat(3, {st_mode=S_IFDIR|0777, st_size=4096, ...}) = 0 <0.000265>
+getdents64(3, 0x5a261023e900 /* 3 entries */, 32768) = 80 <0.001010>
+newfstatat(AT_FDCWD, "./static/Cover.png", {st_mode=S_IFREG|0777, st_size=922133, ...}, AT_SYMLINK_NOFOLLOW) = 0 <0.000689>
+getdents64(3, 0x5a261023e900 /* 0 entries */, 32768) = 0 <0.000245>
+close(3)                                = 0 <0.000293>
+write(1, "\342\224\234\342\224\200\342\224\200 static\n", 17) = 17 <0.000064>
+write(1, "\342\224\202\302\240\302\240 \342\224\224\342\224\200\342\224\200 Cover.png\n", 28) = 28 <0.000066>
+write(1, "\342\224\234\342\224\200\342\224\200 strace-tree.txt\n", 26) = 26 <0.000074>
+openat(AT_FDCWD, "./test", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY) = 3 <0.000601>
+fstat(3, {st_mode=S_IFDIR|0777, st_size=4096, ...}) = 0 <0.000181>
+getdents64(3, 0x5a261023e900 /* 3 entries */, 32768) = 88 <0.000351>
+newfstatat(AT_FDCWD, "./test/test_hello.cpp", {st_mode=S_IFREG|0777, st_size=200, ...}, AT_SYMLINK_NOFOLLOW) = 0 <0.000625>
+getdents64(3, 0x5a261023e900 /* 0 entries */, 32768) = 0 <0.000228>
+close(3)                                = 0 <0.000301>
+write(1, "\342\224\234\342\224\200\342\224\200 test\n", 15) = 15 <0.000056>
+write(1, "\342\224\202\302\240\302\240 \342\224\224\342\224\200\342\224\200 test_hello.cpp"..., 33) = 33 <0.000180>
+write(1, "\342\224\224\342\224\200\342\224\200 xmake.lua\n", 20) = 20 <0.000064>
+write(1, "\n", 1)                       = 1 <0.000061>
+write(1, "10 directories, 14 files\n", 25) = 25 <0.000050>
+exit_group(0)                           = ?
++++ exited with 0 +++
