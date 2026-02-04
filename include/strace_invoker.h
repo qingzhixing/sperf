@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <project_info.h>
+#include <fcntl.h>
 
 class StraceInvoker
 {
@@ -31,17 +32,42 @@ public:
 			NULL,
 		};
 
+		// 创建管道，用于将子进程的stderr重定向到父进程stdin
+		int pipefd[2]; // pipefd[0]用于读，pipefd[1]用于写
+		pipe(pipefd);
+
 		auto pid = fork();
 
 		// Child Process
 		if (pid == 0)
 		{
+			// 关闭pipefd[0]，因为子进程只需要写
+			close(pipefd[0]);
+
+			// 屏蔽stdout
+			int dev_null = open("/dev/null", O_WRONLY);
+			if (dev_null == -1)
+			{
+				perror("open /dev/null");
+				exit(EXIT_FAILURE);
+			}
+			dup2(dev_null, STDOUT_FILENO);
+			close(dev_null);
+
+			// 重定向stderr到pipefd[1]
+			dup2(pipefd[1], STDERR_FILENO);
+			close(pipefd[1]);
+
 			execve("strace", exec_argv, exec_envp);
 			execve("/bin/strace", exec_argv, exec_envp);
 			execve("/usr/bin/strace", exec_argv, exec_envp);
 			perror(ProjectInfo::project_name.c_str());
 			exit(EXIT_FAILURE);
 		}
+		// Parent Process
+		close(pipefd[1]); // 关闭pipefd[1]，因为父进程只需要读
+		dup2(pipefd[0], STDIN_FILENO);
+		close(pipefd[0]);
 
 		// free exec_argv
 		for (size_t i = 0; exec_argv[i] != NULL; i++)
