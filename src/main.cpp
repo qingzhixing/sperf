@@ -38,17 +38,22 @@ int main(int argc, char *argv[])
 	const auto &executable_arguments = sperf_arguments.executable_arguments;
 
 	// 构造调用参数
-	std::vector<std::string> strace_args = {"-T", "-f"};
-	char *exec_argv[strace_args.size() + executable_arguments.size() + 1];
-	for (size_t i = 0; i < strace_args.size(); i++)
+	std::vector<std::string> strace_with_args = {"strace", "-T", "-f"};
+	// strace & strace args
+	char *exec_argv[strace_with_args.size() + executable_arguments.size() + 2];
+	for (size_t i = 0; i < strace_with_args.size(); i++)
 	{
-		exec_argv[i] = strdup(strace_args[i].c_str());
+		exec_argv[i] = strdup(strace_with_args[i].c_str());
 	}
+	// command
+	exec_argv[strace_with_args.size()] = strdup(executable_name.c_str());
+	// command args
 	for (size_t i = 0; i < executable_arguments.size(); i++)
 	{
-		exec_argv[i + strace_args.size()] = strdup(executable_arguments[i].c_str());
+		exec_argv[i + strace_with_args.size() + 1] = strdup(executable_arguments[i].c_str());
 	}
-	exec_argv[strace_args.size() + executable_arguments.size()] = NULL;
+	// NULL
+	exec_argv[strace_with_args.size() + executable_arguments.size() + 1] = NULL;
 
 	char *exec_envp[] = {
 		strdup("PATH=/bin"),
@@ -57,9 +62,10 @@ int main(int argc, char *argv[])
 
 	auto pid = fork();
 
+	// Child Process
 	if (pid == 0)
 	{
-		// Child Process
+		std::cout << "❤️‍🔥Child process is running\n";
 		execve("strace", exec_argv, exec_envp);
 		execve("/bin/strace", exec_argv, exec_envp);
 		execve("/usr/bin/strace", exec_argv, exec_envp);
@@ -67,9 +73,9 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	// 等待子进程并获取错误
+	// Parent Process
 	int status;
-	waitpid(pid, &status, 0);
+	waitpid(pid, &status, 0); // 等待子进程
 
 	return 0;
 }
