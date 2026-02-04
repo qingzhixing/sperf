@@ -3,6 +3,10 @@
 #include <argument_handler.h>
 #include <iostream>
 #include <format>
+#include <string.h>
+#include <string>
+#include <vector>
+#include <sys/wait.h>
 
 int main(int argc, char *argv[])
 {
@@ -30,28 +34,42 @@ int main(int argc, char *argv[])
 		return 0;
 	}
 
-	std::cout << std::format("Executable name: {}\n", sperf_arguments.executable_name);
-	std::cout << "Executable arguments: ";
-	for (const auto &arg : sperf_arguments.executable_arguments)
+	const auto &executable_name = sperf_arguments.executable_name;
+	const auto &executable_arguments = sperf_arguments.executable_arguments;
+
+	// 构造调用参数
+	std::vector<std::string> strace_args = {"-T", "-f"};
+	char *exec_argv[strace_args.size() + executable_arguments.size() + 1];
+	for (size_t i = 0; i < strace_args.size(); i++)
 	{
-		std::cout << arg << " ";
+		exec_argv[i] = strdup(strace_args[i].c_str());
 	}
-	std::cout << "\n";
+	for (size_t i = 0; i < executable_arguments.size(); i++)
+	{
+		exec_argv[i + strace_args.size()] = strdup(executable_arguments[i].c_str());
+	}
+	exec_argv[strace_args.size() + executable_arguments.size()] = NULL;
+
+	char *exec_envp[] = {
+		strdup("PATH=/bin"),
+		NULL,
+	};
+
+	auto pid = fork();
+
+	if (pid == 0)
+	{
+		// Child Process
+		execve("strace", exec_argv, exec_envp);
+		execve("/bin/strace", exec_argv, exec_envp);
+		execve("/usr/bin/strace", exec_argv, exec_envp);
+		perror(argv[0]);
+		exit(EXIT_FAILURE);
+	}
+
+	// 等待子进程并获取错误
+	int status;
+	waitpid(pid, &status, 0);
 
 	return 0;
-
-	char *exec_argv[] = {
-		"strace",
-		"ls",
-		NULL,
-	};
-	char *exec_envp[] = {
-		"PATH=/bin",
-		NULL,
-	};
-	execve("strace", exec_argv, exec_envp);
-	execve("/bin/strace", exec_argv, exec_envp);
-	execve("/usr/bin/strace", exec_argv, exec_envp);
-	perror(argv[0]);
-	exit(EXIT_FAILURE);
 }
