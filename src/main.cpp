@@ -36,8 +36,7 @@ int main(int argc, char *argv[])
 	const auto &executable_arguments = sperf_arguments.executable_arguments;
 
 	// Invoke strace
-	StraceInvoker strace_invoker;
-	auto pid = strace_invoker.Invoke({"-T", "-f"}, executable_name, executable_arguments);
+	auto pid = StraceInvoker::Invoke({"-T", "-f"}, executable_name, executable_arguments);
 	// Wait for strace to finish
 	waitpid(pid, NULL, 0);
 	return 0;

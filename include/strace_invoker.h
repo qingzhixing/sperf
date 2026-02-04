@@ -20,9 +20,9 @@ public:
 	 * @param executable_arguments 可执行文件参数
 	 * @return int 子进程 pid
 	 */
-	int Invoke(const std::vector<std::string> &strace_args,
-			   const std::string &executable_name,
-			   const std::vector<std::string> &executable_arguments)
+	static int Invoke(const std::vector<std::string> &strace_args,
+					  const std::string &executable_name,
+					  const std::vector<std::string> &executable_arguments)
 	{
 		char **exec_argv = ConstructExecArgv(strace_args, executable_name, executable_arguments);
 
@@ -43,13 +43,25 @@ public:
 			exit(EXIT_FAILURE);
 		}
 
+		// free exec_argv
+		for (size_t i = 0; exec_argv[i] != NULL; i++)
+		{
+			free(exec_argv[i]);
+		}
+		delete[] exec_argv;
+		// free exec_envp
+		for (size_t i = 0; exec_envp[i] != NULL; i++)
+		{
+			free(exec_envp[i]);
+		}
+
 		return pid;
 	}
 
 private:
-	char **ConstructExecArgv(const std::vector<std::string> &strace_args,
-							 const std::string &executable_name,
-							 const std::vector<std::string> &executable_arguments)
+	static char **ConstructExecArgv(const std::vector<std::string> &strace_args,
+									const std::string &executable_name,
+									const std::vector<std::string> &executable_arguments)
 	{
 		char **exec_argv = new char *[strace_args.size() + executable_arguments.size() + 3];
 		// strace
