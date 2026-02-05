@@ -51,19 +51,27 @@ public:
 				perror("open /dev/null");
 				exit(EXIT_FAILURE);
 			}
+			int stdout_fd_backup = dup(STDOUT_FILENO);
 			dup2(dev_null, STDOUT_FILENO);
 			close(dev_null);
 
 			// 重定向stderr到pipefd[1]
+			int stderr_fd_backup = dup(STDERR_FILENO);
 			dup2(pipefd[1], STDERR_FILENO);
 			close(pipefd[1]);
 
 			execve("strace", exec_argv, exec_envp);
 			execve("/bin/strace", exec_argv, exec_envp);
 			execve("/usr/bin/strace", exec_argv, exec_envp);
-			perror(ProjectInfo::project_name.c_str());
+
+			// 恢复stdout 和 stderr
+			dup2(stdout_fd_backup, STDOUT_FILENO);
+			dup2(stderr_fd_backup, STDERR_FILENO);
+			perror("strace");
+			std::cout << "❌ 子进程调用strace失败, 可能是你的系统中未安装strace工具。" << std::endl;
 			exit(EXIT_FAILURE);
 		}
+
 		// Parent Process
 		close(pipefd[1]); // 关闭pipefd[1]，因为父进程只需要读
 		dup2(pipefd[0], STDIN_FILENO);
