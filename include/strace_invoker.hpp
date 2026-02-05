@@ -7,7 +7,7 @@
 #include <vector>
 #include <unistd.h>
 #include <sys/wait.h>
-#include <project_info.h>
+#include <project_info.hpp>
 #include <fcntl.h>
 
 class StraceInvoker

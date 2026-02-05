@@ -1,6 +1,6 @@
-#include <project_info.h>
-#include <argument_handler.h>
-#include <strace_invoker.h>
+#include <project_info.hpp>
+#include <argument_handler.hpp>
+#include <strace_invoker.hpp>
 #include <iostream>
 #include <format>
 #include <string>
