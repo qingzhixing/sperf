@@ -40,30 +40,7 @@ int main(int argc, char *argv[])
 	auto [pid, fd_read] = StraceInvoker::Invoke({"-T", "-f"}, executable_name, executable_arguments);
 
 	// Parse strace output
-	OutputParser::ParseOutput(fd_read);
+	OutputParser::ParseOutput(pid, fd_read);
 
-	// Wait for strace to finish
-	int status;
-	waitpid(pid, &status, 0);
-	// 判断是否异常退出，并获取错误码
-	if (WIFEXITED(status))
-	{
-		int error_code = WEXITSTATUS(status);
-		if (error_code != 0)
-		{
-			std::cout << std::format("❌ 子进程 {} 退出, 错误码: {}\n", pid, error_code);
-			return 1;
-		}
-	}
-	else if (WIFSIGNALED(status))
-	{
-		std::cout << std::format("❌ 子进程 {} 被信号 {} 终止, Status: {}\n", pid, WTERMSIG(status), status);
-		return 1;
-	}
-	else
-	{
-		std::cout << std::format("❌ 子进程 {} 异常退出, Status: {}\n", pid, status);
-		return 1;
-	}
 	return 0;
 }

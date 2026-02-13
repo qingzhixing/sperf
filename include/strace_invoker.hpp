@@ -21,14 +21,17 @@ public:
 	 * @param strace_args strace 命令参数
 	 * @param executable_name 可执行文件名
 	 * @param executable_arguments 可执行文件参数
-	 * @return pair<int, int> 子进程 pid 和 管道读口 fd
+	 * @return pair<int, int> 子进程 pid和 管道读口 fd
 	 */
 	static std::pair<int, int> Invoke(
 		const std::vector<std::string> &strace_args,
 		const std::string &executable_name,
 		const std::vector<std::string> &executable_arguments)
 	{
-		char **exec_argv = ConstructExecArgv(strace_args, executable_name, executable_arguments);
+		char **exec_argv = ConstructExecArgv(
+			strace_args,
+			executable_name,
+			executable_arguments);
 
 		char *exec_envp[] = {
 			strdup("PATH=/bin"),
@@ -81,12 +84,19 @@ public:
 			dup2(stdout_fd_backup, STDOUT_FILENO);
 			dup2(stderr_fd_backup, STDERR_FILENO);
 			perror("strace");
-			std::cout << "❌ 子进程调用strace失败, 可能是你的系统中未安装strace工具。" << std::endl;
+			std::cout << "❌ 子进程调用strace失败,"
+					  << " 可能是你的系统中未安装strace工具."
+					  << std::endl;
 			exit(EXIT_FAILURE);
 		}
 
 		// Parent Process
-		close(pipefd[1]); // 关闭pipefd[1]，因为父进程只需要读
+
+		// 关闭pipefd[1]，因为父进程只需要读
+		close(pipefd[1]);
+
+		// 设置读取段为非阻塞模式
+		fcntl(pipefd[0], F_SETFL, O_NONBLOCK);
 
 		// free exec_argv
 		for (size_t i = 0; exec_argv[i] != NULL; i++)

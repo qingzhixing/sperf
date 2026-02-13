@@ -4,10 +4,21 @@
 
 #include <string>
 #include <iostream>
+#include <pidfd_open.hpp>
 
 class OutputParser
 {
 public:
-	static void ParseOutput(const int fd_read) {}
+	/**
+	 * @brief 解析 strace 输出
+	 *
+	 * @param pid 子进程 pid
+	 * @param fd_read 管道读口 fd
+	 */
+	static void ParseOutput(const int child_pid, const int fd_read)
+	{
+		int status;
+		char buffer[4096];
+	}
 };
 #endif //! OUTPUT_PARSER_H
