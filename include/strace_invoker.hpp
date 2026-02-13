@@ -10,6 +10,8 @@
 #include <project_info.hpp>
 #include <fcntl.h>
 
+class TestStraceInvoker;
+
 class StraceInvoker
 {
 public:
@@ -126,6 +128,8 @@ private:
 
 		return exec_argv;
 	}
+
+	friend class TestStraceInvoker;
 };
 
 #endif //! STRACE_INVOKER_H

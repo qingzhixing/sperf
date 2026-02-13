@@ -1,5 +1,5 @@
 #include <testkit.h>
-#include <argument_handler.h>
+#include <argument_handler.hpp>
 #include <string.h>
 
 UnitTest(Test_HelpArgument_Long)

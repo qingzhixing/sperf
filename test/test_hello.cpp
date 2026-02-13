@@ -1,7 +1,7 @@
 #include <testkit.h>
 #include <iostream>
 #include <format>
-#include <project_info.h>
+#include <project_info.hpp>
 
 UnitTest(Test_Hello)
 {
