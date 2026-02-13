@@ -38,6 +38,12 @@ public:
 
 		auto pid = fork();
 
+		if(pid < 0)
+		{
+			perror("fork");
+			exit(EXIT_FAILURE);
+		}
+
 		// Child Process
 		if (pid == 0)
 		{
