@@ -5,6 +5,7 @@
 #include <format>
 #include <string>
 #include <vector>
+#include <output_parser.hpp>
 
 int main(int argc, char *argv[])
 {
@@ -37,6 +38,10 @@ int main(int argc, char *argv[])
 
 	// Invoke strace
 	auto pid = StraceInvoker::Invoke({"-T", "-f"}, executable_name, executable_arguments);
+
+	// Parse strace output
+	OutputParser::ParseOutput(std::cin);
+
 	// Wait for strace to finish
 	int status;
 	waitpid(pid, &status, 0);
