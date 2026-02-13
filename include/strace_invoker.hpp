@@ -21,9 +21,10 @@ public:
 	 * @param executable_arguments 可执行文件参数
 	 * @return pair<int, int> 子进程 pid 和 管道读口 fd
 	 */
-	static std::pair<int, int> Invoke(const std::vector<std::string> &strace_args,
-									  const std::string &executable_name,
-									  const std::vector<std::string> &executable_arguments)
+	static std::pair<int, int> Invoke(
+		const std::vector<std::string> &strace_args,
+		const std::string &executable_name,
+		const std::vector<std::string> &executable_arguments)
 	{
 		char **exec_argv = ConstructExecArgv(strace_args, executable_name, executable_arguments);
 
@@ -34,11 +35,15 @@ public:
 
 		// 创建管道，用于将子进程的stderr重定向到父进程stdin
 		int pipefd[2]; // pipefd[0]用于读，pipefd[1]用于写
-		pipe(pipefd);
+		if (pipe(pipefd) == -1)
+		{
+			perror("pipe");
+			exit(EXIT_FAILURE);
+		}
 
 		auto pid = fork();
 
-		if(pid < 0)
+		if (pid < 0)
 		{
 			perror("fork");
 			exit(EXIT_FAILURE);
