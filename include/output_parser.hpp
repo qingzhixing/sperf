@@ -8,6 +8,6 @@
 class OutputParser
 {
 public:
-	static void ParseOutput(const std::istream &input_stream) {}
+	static void ParseOutput(const int fd_read) {}
 };
 #endif //! OUTPUT_PARSER_H

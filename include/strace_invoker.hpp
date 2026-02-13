@@ -19,11 +19,11 @@ public:
 	 * @param strace_args strace 命令参数
 	 * @param executable_name 可执行文件名
 	 * @param executable_arguments 可执行文件参数
-	 * @return int 子进程 pid
+	 * @return pair<int, int> 子进程 pid 和 管道读口 fd
 	 */
-	static int Invoke(const std::vector<std::string> &strace_args,
-					  const std::string &executable_name,
-					  const std::vector<std::string> &executable_arguments)
+	static std::pair<int, int> Invoke(const std::vector<std::string> &strace_args,
+									  const std::string &executable_name,
+									  const std::vector<std::string> &executable_arguments)
 	{
 		char **exec_argv = ConstructExecArgv(strace_args, executable_name, executable_arguments);
 
@@ -74,8 +74,6 @@ public:
 
 		// Parent Process
 		close(pipefd[1]); // 关闭pipefd[1]，因为父进程只需要读
-		dup2(pipefd[0], STDIN_FILENO);
-		close(pipefd[0]);
 
 		// free exec_argv
 		for (size_t i = 0; exec_argv[i] != NULL; i++)
@@ -89,7 +87,7 @@ public:
 			free(exec_envp[i]);
 		}
 
-		return pid;
+		return {pid, pipefd[0]};
 	}
 
 private:

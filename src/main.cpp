@@ -37,10 +37,10 @@ int main(int argc, char *argv[])
 	const auto &executable_arguments = sperf_arguments.executable_arguments;
 
 	// Invoke strace
-	auto pid = StraceInvoker::Invoke({"-T", "-f"}, executable_name, executable_arguments);
+	auto [pid, fd_read] = StraceInvoker::Invoke({"-T", "-f"}, executable_name, executable_arguments);
 
 	// Parse strace output
-	OutputParser::ParseOutput(std::cin);
+	OutputParser::ParseOutput(fd_read);
 
 	// Wait for strace to finish
 	int status;
