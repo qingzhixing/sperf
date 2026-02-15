@@ -116,19 +116,19 @@ public:
 	 * @param line 单行 strace 输出
 	 * @return std::pair<std::string, double>  syscall_name 和 cost_time
 	 */
-	static std::pair<std::string, double> auto(const std::string &line)
+	static std::pair<std::string, double> ParseSingleLine(const std::string &line)
 	{
 		// 每行格式为 "syscall_name(...) = return_value <cost_time>"
 		// 提取 syscall_name 并累加时间
 		auto name_start = line.find_first_not_of(" \t");
 		if (name_start == std::string::npos)
 		{
-			return;
+			return {};
 		}
 		auto name_end = line.find("(", name_start);
 		if (name_end == std::string::npos)
 		{
-			return;
+			return {};
 		}
 		std::string syscall_name = line.substr(name_start, name_end - name_start);
 
@@ -137,7 +137,7 @@ public:
 		auto cost_end = line.find_last_of(">");
 		if (cost_start == std::string::npos || cost_end == std::string::npos)
 		{
-			return;
+			return {};
 		}
 		std::string cost_time_str = line.substr(cost_start, cost_end - cost_start);
 		try
@@ -148,6 +148,7 @@ public:
 		catch (const std::invalid_argument &e)
 		{
 			// 忽略无法转换为 double 的 cost_time
+			return {};
 		}
 	}
 
