@@ -102,7 +102,11 @@ public:
 			auto line = line_buffer.substr(0, pos);
 			line_buffer.erase(0, pos + 1);
 			// 解析 line 并累加 syscall 时间
-			ParseSingleLine(line);
+			auto [syscall_name, cost_time] = ParseSingleLine(line);
+			if (!syscall_name.empty())
+			{
+				syscall_time_map[syscall_name] += cost_time;
+			}
 		}
 	}
 
@@ -110,8 +114,9 @@ public:
 	 * @brief 解析单行 strace 输出并累加 syscall 时间
 	 *
 	 * @param line 单行 strace 输出
+	 * @return std::pair<std::string, double>  syscall_name 和 cost_time
 	 */
-	static void ParseSingleLine(const std::string &line)
+	static std::pair<std::string, double> auto(const std::string &line)
 	{
 		// 每行格式为 "syscall_name(...) = return_value <cost_time>"
 		// 提取 syscall_name 并累加时间
@@ -138,9 +143,7 @@ public:
 		try
 		{
 			double cost_time = std::stod(cost_time_str);
-
-			// 累加 syscall 时间
-			syscall_time_map[syscall_name] += cost_time;
+			return {syscall_name, cost_time};
 		}
 		catch (const std::invalid_argument &e)
 		{
