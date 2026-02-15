@@ -158,7 +158,12 @@ public:
 		std::cout << "\033[2J\033[1;1H";
 
 		std::cout << "🕰️ 系统调用耗时统计（单位：秒）:\n";
-		for (const auto &[syscall, time] : syscall_time_map)
+		// 按耗时排序输出
+		std::vector<std::pair<std::string, double>> sorted_syscalls(syscall_time_map.begin(), syscall_time_map.end());
+		std::sort(sorted_syscalls.begin(), sorted_syscalls.end(),
+				  [](const auto &a, const auto &b)
+				  { return a.second > b.second; });
+		for (const auto &[syscall, time] : sorted_syscalls)
 		{
 			std::cout << std::format("{:<20} {:>10.6f}\n", syscall, time);
 		}
