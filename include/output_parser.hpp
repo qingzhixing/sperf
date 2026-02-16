@@ -14,14 +14,17 @@ class OutputParser
 {
 
 public:
+	/**
+	 * @brief Construct a new Output Parser object
+	 *
+	 * @param pid 子进程 pid
+	 * @param fd_read 管道读口 fd
+	 */
 	OutputParser(int pid, int fd_read) : child_pid(pid), fd_read(fd_read), syscalls_time_s(0.0) {}
 
 public:
 	/**
 	 * @brief 解析 strace 输出
-	 *
-	 * @param pid 子进程 pid
-	 * @param fd_read 管道读口 fd
 	 */
 	void ParseOutput()
 	{
