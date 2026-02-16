@@ -209,26 +209,26 @@ public:
 				  { return a.second > b.second; });
 
 		// 打印表头
-		std::cout << std::format("{:<20} {:>7} {:>13}\n",
-								 "Syscall Name", "Time", "Percentage(%)");
+		std::cout << std::format("{:<20} {:>7} {:>8}\n",
+								 "Syscall Name", "Time", "(%)");
 		std::cout << std::string(45, '-') << "\n";
 
 		for (const auto &[syscall, time] : sorted_syscalls)
 		{
 			auto [formatted_time, unit] = FormatTime(time);
-			std::cout << std::format("{:<20} {:>8.3f} {} ({:>6.2f}%)\n",
+			std::cout << std::format("{:<20} {:>8.3f} {:>2} ({:>6.2f}%)\n",
 									 syscall, formatted_time, unit, time / syscalls_time_s * 100);
 		}
 	}
 
 	/**
-	 * @brief 判断是否需要打印统计信息，每 100 ms 打印一次
+	 * @brief 判断是否需要打印统计信息，每 500 ms 打印一次
 	 */
 	bool IsTimeToPrint()
 	{
 		auto now = std::chrono::steady_clock::now();
 		auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(now - last_print_time);
-		if (duration.count() >= 100)
+		if (duration.count() >= 500)
 		{
 			last_print_time = now;
 			return true;
