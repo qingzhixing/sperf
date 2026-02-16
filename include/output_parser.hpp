@@ -187,8 +187,8 @@ public:
 	{
 		// 计算子进程运行时间
 		auto now = std::chrono::steady_clock::now();
-		auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(now - sub_process_start_time);
-		double sub_process_time_s = duration.count() / 1000.0;
+		auto duration_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(now - sub_process_start_time);
+		double sub_process_time_s = duration_ns.count() / 1e9;
 
 		// clear screen
 		std::cout << "\033[2J\033[1;1H";
@@ -209,8 +209,8 @@ public:
 				  { return a.second > b.second; });
 
 		// 打印表头
-		std::cout << std::format("{:<20} {:>12} {:>8}\n",
-								 "系统调用", "耗时", "占比(%)");
+		std::cout << std::format("{:<20} {:>7} {:>13}\n",
+								 "Syscall Name", "Time", "Percentage(%)");
 		std::cout << std::string(45, '-') << "\n";
 
 		for (const auto &[syscall, time] : sorted_syscalls)
@@ -226,7 +226,6 @@ public:
 	 */
 	bool IsTimeToPrint()
 	{
-		last_print_time = std::chrono::steady_clock::now();
 		auto now = std::chrono::steady_clock::now();
 		auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(now - last_print_time);
 		if (duration.count() >= 100)
