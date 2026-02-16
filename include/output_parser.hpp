@@ -173,20 +173,10 @@ public:
 			// 大于1秒，使用秒为单位
 			return {time_seconds, "s"};
 		}
-		else if (time_seconds >= 0.001)
+		else
 		{
 			// 1毫秒到1秒之间，使用毫秒为单位
 			return {time_seconds * 1000.0, "ms"};
-		}
-		else if (time_seconds >= 0.000001)
-		{
-			// 1微秒到1毫秒之间，使用微秒为单位
-			return {time_seconds * 1000000.0, "μs"};
-		}
-		else
-		{
-			// 小于1微秒，使用纳秒为单位
-			return {time_seconds * 1000000000.0, "ns"};
 		}
 	}
 
