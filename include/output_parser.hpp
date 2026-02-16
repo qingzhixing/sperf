@@ -7,6 +7,7 @@
 #include <pidfd_open.hpp>
 #include <map>
 #include <chrono>
+#include <sys/wait.h>
 
 class OutputParser
 {
