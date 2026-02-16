@@ -40,7 +40,8 @@ int main(int argc, char *argv[])
 	auto [pid, fd_read] = StraceInvoker::Invoke({"-T", "-f"}, executable_name, executable_arguments);
 
 	// Parse strace output
-	OutputParser::ParseOutput(pid, fd_read);
+	OutputParser output_parser(pid, fd_read);
+	output_parser.ParseOutput();
 
 	return 0;
 }

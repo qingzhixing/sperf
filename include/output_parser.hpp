@@ -1,6 +1,6 @@
 #pragma once
-#ifndef OUTPUT_PARSER_H
-#define OUTPUT_PARSER_H
+#ifndef OUTPUT_PARSER_HPP
+#define OUTPUT_PARSER_HPP
 
 #include <string>
 #include <iostream>
@@ -8,9 +8,14 @@
 #include <map>
 #include <chrono>
 #include <sys/wait.h>
+#include <format>
 
 class OutputParser
 {
+
+public:
+	OutputParser(int pid, int fd_read) : child_pid(pid), fd_read(fd_read), syscalls_time_s(0.0) {}
+
 public:
 	/**
 	 * @brief 解析 strace 输出
@@ -18,8 +23,10 @@ public:
 	 * @param pid 子进程 pid
 	 * @param fd_read 管道读口 fd
 	 */
-	static void ParseOutput(const int child_pid, const int fd_read)
+	void ParseOutput()
 	{
+		// 记录子进程启动时间，用于计算相对时间
+		sub_process_start_time = std::chrono::steady_clock::now();
 		int status;
 		char buffer[4096];
 
@@ -91,10 +98,9 @@ public:
 	 * @param buffer  strace 输出的数据
 	 * @param n       数据字节数
 	 */
-	static void ParseAndAccumulate(char *buffer, ssize_t n)
+	void ParseAndAccumulate(char *buffer, ssize_t n)
 	{
 		// 维护一个行缓冲，用于解析每行数据
-		static std::string line_buffer;
 		line_buffer.append(buffer, n);
 		// 查找换行符，将行缓冲中的数据解析并累加
 		size_t pos;
@@ -107,6 +113,7 @@ public:
 			if (!syscall_name.empty())
 			{
 				syscall_time_map[syscall_name] += cost_time;
+				syscalls_time_s += cost_time;
 			}
 		}
 	}
@@ -153,27 +160,83 @@ public:
 		}
 	}
 
-	static void PrintSyscallTimes()
+	/**
+	 * @brief 格式化时间显示，智能选择合适的时间单位
+	 *
+	 * @param time_seconds 时间（秒）
+	 * @return std::pair<double, std::string> 格式化后的数值和单位
+	 */
+	static std::pair<double, std::string> FormatTime(double time_seconds)
 	{
+		if (time_seconds >= 1.0)
+		{
+			// 大于1秒，使用秒为单位
+			return {time_seconds, "s"};
+		}
+		else if (time_seconds >= 0.001)
+		{
+			// 1毫秒到1秒之间，使用毫秒为单位
+			return {time_seconds * 1000.0, "ms"};
+		}
+		else if (time_seconds >= 0.000001)
+		{
+			// 1微秒到1毫秒之间，使用微秒为单位
+			return {time_seconds * 1000000.0, "μs"};
+		}
+		else
+		{
+			// 小于1微秒，使用纳秒为单位
+			return {time_seconds * 1000000000.0, "ns"};
+		}
+	}
+
+	/**
+	 * @brief 输出系统调用耗时统计信息
+	 */
+	void PrintSyscallTimes()
+	{
+		// 计算子进程运行时间
+		auto now = std::chrono::steady_clock::now();
+		auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(now - sub_process_start_time);
+		double sub_process_time_s = duration.count() / 1000.0;
+
 		// clear screen
 		std::cout << "\033[2J\033[1;1H";
 
-		std::cout << "🕰️ 系统调用耗时统计（单位：秒）:\n";
+		// 智能选择时间单位
+		auto [sub_process_time, sub_process_unit] = FormatTime(sub_process_time_s);
+		auto [syscalls_time, syscalls_unit] = FormatTime(syscalls_time_s);
+
+		std::cout << std::format("📊 子进程运行时间: {:.3f} {}\n", sub_process_time, sub_process_unit);
+		std::cout << std::format("🔧 系统调用总耗时: {:.3f} {}\n", syscalls_time, syscalls_unit);
+		std::cout << std::format("📈 系统调用占比: {:.2f}%\n\n", (syscalls_time_s / sub_process_time_s) * 100);
+
+		std::cout << "🕰️ 系统调用耗时统计:\n";
 		// 按耗时排序输出
 		std::vector<std::pair<std::string, double>> sorted_syscalls(syscall_time_map.begin(), syscall_time_map.end());
 		std::sort(sorted_syscalls.begin(), sorted_syscalls.end(),
 				  [](const auto &a, const auto &b)
 				  { return a.second > b.second; });
+
+		// 打印表头
+		std::cout << std::format("{:<20} {:>12} {:>8}\n",
+								 "系统调用", "耗时", "占比(%)");
+		std::cout << std::string(45, '-') << "\n";
+
 		for (const auto &[syscall, time] : sorted_syscalls)
 		{
-			std::cout << std::format("{:<20} {:>10.6f}\n", syscall, time);
+			auto [formatted_time, unit] = FormatTime(time);
+			std::cout << std::format("{:<20} {:>8.3f} {} ({:>6.2f}%)\n",
+									 syscall, formatted_time, unit, time / syscalls_time_s * 100);
 		}
 	}
 
-	static bool IsTimeToPrint()
+	/**
+	 * @brief 判断是否需要打印统计信息，每 100 ms 打印一次
+	 */
+	bool IsTimeToPrint()
 	{
-		// 100ms打印一次
-		static auto last_print_time = std::chrono::steady_clock::now();
+		last_print_time = std::chrono::steady_clock::now();
 		auto now = std::chrono::steady_clock::now();
 		auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(now - last_print_time);
 		if (duration.count() >= 100)
@@ -185,6 +248,12 @@ public:
 	}
 
 private:
-	inline static std::map<std::string, double> syscall_time_map;
+	std::chrono::steady_clock::time_point last_print_time;
+	std::chrono::steady_clock::time_point sub_process_start_time;
+	double syscalls_time_s;
+	std::map<std::string, double> syscall_time_map;
+	std::string line_buffer;
+	int child_pid;
+	int fd_read;
 };
-#endif //! OUTPUT_PARSER_H
+#endif //! OUTPUT_PARSER_HPP
