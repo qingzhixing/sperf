@@ -1,6 +1,6 @@
 #pragma once
-#ifndef PROJECT_INFO_H
-#define PROJECT_INFO_H
+#ifndef PROJECT_INFO_HPP
+#define PROJECT_INFO_HPP
 
 #include <string>
 #include <format>
@@ -50,4 +50,4 @@ public:
 	}
 };
 
-#endif //! PROJECT_INFO_H
+#endif //! PROJECT_INFO_HPP

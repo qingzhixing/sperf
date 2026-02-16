@@ -1,6 +1,6 @@
 #pragma once
-#ifndef STRACE_INVOKER_H
-#define STRACE_INVOKER_H
+#ifndef STRACE_INVOKER_HPP
+#define STRACE_INVOKER_HPP
 
 #include <string>
 #include <cstring>
@@ -142,4 +142,4 @@ private:
 	friend class TestStraceInvoker;
 };
 
-#endif //! STRACE_INVOKER_H
+#endif //! STRACE_INVOKER_HPP

@@ -1,6 +1,6 @@
 #pragma once
-#ifndef ARGUMENT_HANDLER_H
-#define ARGUMENT_HANDLER_H
+#ifndef ARGUMENT_HANDLER_HPP
+#define ARGUMENT_HANDLER_HPP
 
 #include <string>
 #include <vector>
@@ -96,4 +96,4 @@ public:
 	}
 };
 
-#endif //! ARGUMENT_HANDLER_H
+#endif //! ARGUMENT_HANDLER_HPP

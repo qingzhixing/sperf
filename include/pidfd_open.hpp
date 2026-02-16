@@ -1,6 +1,6 @@
 #pragma once
-#ifndef PIDFD_OPEN_H
-#define PIDFD_OPEN_H
+#ifndef PIDFD_OPEN_HPP
+#define PIDFD_OPEN_HPP
 
 #include <sys/types.h>
 #include <sys/syscall.h>
@@ -12,4 +12,4 @@ inline int pidfd_open(__pid_t pid, unsigned int flags)
 	return syscall(__NR_pidfd_open, pid, flags);
 }
 
-#endif //! PIDFD_OPEN_H
+#endif //! PIDFD_OPEN_HPP
